@@ -93,7 +93,14 @@
       <option name="project" value="LOCAL" />
       <updated>1708105776412</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="new">
+      <created>1708260679717</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1708260679717</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -128,15 +135,20 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/AVLTree.java</url>
-          <line>28</line>
-          <option name="timeStamp" value="4" />
+          <line>74</line>
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/AVLTree.java</url>
-          <line>20</line>
-          <option name="timeStamp" value="5" />
+          <line>75</line>
+          <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="avlTree" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

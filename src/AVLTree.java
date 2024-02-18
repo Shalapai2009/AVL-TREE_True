@@ -1,3 +1,4 @@
+import javax.swing.plaf.PanelUI;
 import java.util.Stack;
 
 public class AVLTree {
@@ -16,7 +17,8 @@ public class AVLTree {
             while (true) {
                 if (currentNode.getLengthKeyUrl() > node.getLengthKeyUrl()) {
                     if (currentNode.getLeftChild() == null){
-                    currentNode.setLeftChild(node);
+
+                        currentNode.setLeftChild(node);
 
                     return;}
                     else {
@@ -25,7 +27,6 @@ public class AVLTree {
                 } else {
                     if (currentNode.getRightChild() == null){
                         currentNode.setRightChild(node);
-
                         return;
                     }
                     else {
@@ -36,6 +37,56 @@ public class AVLTree {
             }
         }
     }
+    public Node findNodeByKey(String keyUrl){
+            String key = keyUrl;
+            int keyLength = key.length();
+                Node currentNode = rootNode;
+                while (currentNode != null){
+                    if (currentNode.getLengthKeyUrl() == keyLength  & currentNode.getKeyUrl().equals(key)) {
+                        return currentNode;
+                    } else if (currentNode.getLengthKeyUrl() >= keyLength) {
+                        currentNode = currentNode.getLeftChild();
+                    }
+                      else if ( currentNode.getLengthKeyUrl() < keyLength) {
+                    currentNode = currentNode.getRightChild();
+                }
+
+                }
+                throw new NullPointerException("Не существует такого URL");
+                //return null;
+    }
+    public Node findNodeByNode(Node node){
+        Node currentNode = rootNode;
+        while (currentNode != null){
+            if (currentNode.getLengthKeyUrl() == node.getLengthKeyUrl()) {
+                return currentNode;
+            } else if (currentNode.getLengthKeyUrl() >= node.getLengthKeyUrl()) {
+                currentNode = currentNode.getLeftChild();
+            }
+            else if ( currentNode.getLengthKeyUrl() < node.getLengthKeyUrl()) {
+                currentNode = currentNode.getRightChild();
+            }
+
+        }
+        throw new NullPointerException("Не существует такой ячейки");
+        //return null;
+    }
+    public void deleteNode(Node node){
+        Node currentNode = findNodeByNode(node);
+        if (currentNode.getRightChild() ==null & currentNode.getLeftChild() == null){
+            currentNode = null;
+        } else if (currentNode.getRightChild() ==null & currentNode.getLeftChild() != null) {
+            currentNode = currentNode.getLeftChild();
+        }
+        else if (currentNode.getRightChild() != null & currentNode.getLeftChild() == null) {
+            currentNode = currentNode.getRightChild();
+        }
+        else {
+            
+        }
+    }
+
+
     public void printTree() { // метод для вывода дерева в консоль
         Stack globalStack = new Stack(); // общий стек для значений дерева
         globalStack.push(rootNode);

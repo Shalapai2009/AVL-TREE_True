@@ -21,7 +21,6 @@ public class Node {
         this.codeHtml = codeHtml;
     }
 
-
     public void setKeyUrl(String keyUrl) {
         this.keyUrl = keyUrl;
     }
@@ -32,7 +31,7 @@ public class Node {
         return this.leftChild;
     }
 
-    public void setLeftChild( final Node leftChild) {
+    public void setLeftChild(Node leftChild) {
         this.leftChild = leftChild;
     }
 
@@ -40,7 +39,7 @@ public class Node {
         return this.rightChild;
     }
 
-    public void setRightChild(final Node rightChild) {
+    public void setRightChild(Node rightChild) {
         this.rightChild = rightChild;
     }
 
