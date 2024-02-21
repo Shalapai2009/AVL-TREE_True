@@ -13,13 +13,12 @@ public class AVLTree {
         }
         else {
             Node currentNode = rootNode; // начинаем с корневого узла
-
             while (true) {
                 if (currentNode.getLengthKeyUrl() > node.getLengthKeyUrl()) {
                     if (currentNode.getLeftChild() == null){
 
                         currentNode.setLeftChild(node);
-
+                        currentNode.getLeftChild().setParent(currentNode);
                     return;}
                     else {
                         currentNode = currentNode.getLeftChild();
@@ -27,6 +26,7 @@ public class AVLTree {
                 } else {
                     if (currentNode.getRightChild() == null){
                         currentNode.setRightChild(node);
+                        currentNode.getRightChild().setParent(currentNode);
                         return;
                     }
                     else {
@@ -66,23 +66,28 @@ public class AVLTree {
             else if ( currentNode.getLengthKeyUrl() < node.getLengthKeyUrl()) {
                 currentNode = currentNode.getRightChild();
             }
-
         }
         throw new NullPointerException("Не существует такой ячейки");
         //return null;
     }
     public void deleteNode(Node node){
-        Node currentNode = findNodeByNode(node);
-        if (currentNode.getRightChild() ==null & currentNode.getLeftChild() == null){
-            currentNode = null;
-        } else if (currentNode.getRightChild() ==null & currentNode.getLeftChild() != null) {
-            currentNode = currentNode.getLeftChild();
+       Node currentNode = findNodeByNode(node);
+        if (currentNode.getRightChild() == null & currentNode.getLeftChild() == null){
+            currentNode = currentNode.getParent();
+            if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null){
+            currentNode.setLeftChild(null);}
+            else {currentNode.setRightChild(null);}
+
+        } else if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null) {
+            currentNode.getParent().setLeftChild(currentNode.getLeftChild());
+            currentNode.getLeftChild().setParent(currentNode.getParent());// Вот это строка мне вообще не нравится. Неразумно; upd: Исправил находящуюся там ересь, но все равно кривовато
         }
         else if (currentNode.getRightChild() != null & currentNode.getLeftChild() == null) {
-            currentNode = currentNode.getRightChild();
+            currentNode.getParent().setRightChild(currentNode.getRightChild());
+            currentNode.getRightChild().setParent(currentNode.getParent());// Вот это строка мне вообще не нравится. Неразумно; upd: Исправил находящуюся там ересь, но все равно кривовато
         }
         else {
-            
+
         }
     }
 

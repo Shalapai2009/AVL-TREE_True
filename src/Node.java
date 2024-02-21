@@ -3,6 +3,7 @@ import java.math.BigInteger;
 public class Node {
     private String keyUrl;
     private String codeHtml;
+    private Node parent; // Батя
     private Node leftChild; // Левый узел потомок
     private Node rightChild; // Правый узел потомок
     public Node(String keyUrl, String codeHtml) {
@@ -41,6 +42,13 @@ public class Node {
 
     public void setRightChild(Node rightChild) {
         this.rightChild = rightChild;
+    }
+    public Node getParent() {
+        return this.parent;
+    }
+
+    public void setParent(Node parent) {
+        this.parent = parent;
     }
 
 }
