@@ -101,11 +101,12 @@ public class AVLTree {
                 currentNode.setKeyUrl(currentNode.getRightChild().getKeyUrl());
                 currentNode.setRightChild(null);
                 //currentNode.getParent().setLeftChild(currentNode.getRightChild());
-            } else  if (currentNode.getRightChild().getLeftChild() != null & currentNode.getRightChild().getRightChild() == null) {//проверяем правого ребенка есть ли у него дети
-            Node RightNode = currentNode.getRightChild();
-                while (currentNode.getRightChild().getLeftChild() != null) {
-
+            } else  if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него дети
+            Node rightNode = currentNode.getRightChild();
+                while (rightNode.getLeftChild() != null) {
+                    rightNode = rightNode.getLeftChild();
             }
+
 
             }
             }

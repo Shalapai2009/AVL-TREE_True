@@ -13,6 +13,7 @@ public class Main {
         avlTree.insertNode(node4);
         avlTree.insertNode(node3);
         avlTree.insertNode(node5);
+
         avlTree.deleteNode(node4);
        // System.out.println(avlTree.findNodeByNode(new Node("11111","5")).getLengthKeyUrl());
         System.out.println("/");
