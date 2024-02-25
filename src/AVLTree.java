@@ -23,7 +23,8 @@ public class AVLTree {
                     else {
                         currentNode = currentNode.getLeftChild();
                     }
-                } else {
+                }
+                else {
                     if (currentNode.getRightChild() == null){
                         currentNode.setRightChild(node);
                         currentNode.getRightChild().setParent(currentNode);
@@ -65,6 +66,7 @@ public class AVLTree {
             }
             else if ( currentNode.getLengthKeyUrl() < node.getLengthKeyUrl()) {
                 currentNode = currentNode.getRightChild();
+
             }
         }
         throw new NullPointerException("Не существует такой ячейки");
@@ -72,26 +74,42 @@ public class AVLTree {
     }
     public void deleteNode(Node node){
        Node currentNode = findNodeByNode(node);
-        if (currentNode.getRightChild() == null & currentNode.getLeftChild() == null){
-            currentNode = currentNode.getParent();
-            if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null){
-            currentNode.setLeftChild(null);}
-            else {currentNode.setRightChild(null);}
+        if (currentNode.getParent()==null){
+            if (currentNode.getRightChild() != null){
+                rootNode = currentNode.getRightChild();
+                //Удаление первого элемента нормально не работает
+            }
+        } else{
+        if (currentNode.getRightChild() == null & currentNode.getLeftChild() == null){// если же у узла нет детей, то
+            currentNode = currentNode.getParent(); //откатываемся до его Бати
+            if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null){ // проверяем правым или левым был узел
+            currentNode.setLeftChild(null);}//обнуляем узел
+            else {currentNode.setRightChild(null);}//79
 
         } else if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null) {
-            currentNode.getParent().setLeftChild(currentNode.getLeftChild());
-            currentNode.getLeftChild().setParent(currentNode.getParent());// Вот это строка мне вообще не нравится. Неразумно; upd: Исправил находящуюся там ересь, но все равно кривовато
+            currentNode.getParent().setLeftChild(currentNode.getLeftChild());// Перемещаемся до Бати и даем ему ребенка его ребенка. Внук становится сыном, пиздец
+            currentNode.getLeftChild().setParent(currentNode.getParent());// Отец ребенка заменяется его дедом
         }
         else if (currentNode.getRightChild() != null & currentNode.getLeftChild() == null) {
-            currentNode.getParent().setRightChild(currentNode.getRightChild());
-            currentNode.getRightChild().setParent(currentNode.getParent());// Вот это строка мне вообще не нравится. Неразумно; upd: Исправил находящуюся там ересь, но все равно кривовато
+            currentNode.getParent().setRightChild(currentNode.getRightChild());//83
+            currentNode.getRightChild().setParent(currentNode.getParent());//84
         }
-        else {
+        else if (currentNode.getRightChild() != null & currentNode.getLeftChild() != null){//но что желать если существуют два ребенка
+            if (currentNode.getRightChild().getLeftChild() == null & currentNode.getRightChild().getRightChild() == null){//проверяем правого ребенка есть ли у него дети
+            //если нет то меняем значения родителя на ребенка, а ребенка дезинтергируем
+                currentNode.setCodeHtml(currentNode.getRightChild().getCodeHtml());
+                currentNode.setKeyUrl(currentNode.getRightChild().getKeyUrl());
+                currentNode.setRightChild(null);
+                //currentNode.getParent().setLeftChild(currentNode.getRightChild());
+            } else  if (currentNode.getRightChild().getLeftChild() != null & currentNode.getRightChild().getRightChild() == null) {//проверяем правого ребенка есть ли у него дети
+            Node RightNode = currentNode.getRightChild();
+                while (currentNode.getRightChild().getLeftChild() != null) {
 
-        }
-    }
+            }
 
-
+            }
+            }
+    }}
     public void printTree() { // метод для вывода дерева в консоль
         Stack globalStack = new Stack(); // общий стек для значений дерева
         globalStack.push(rootNode);
