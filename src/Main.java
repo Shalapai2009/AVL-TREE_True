@@ -1,6 +1,7 @@
 public class Main {
     public static void main(String[] args) {
        // Node node = new Node("https://www.youtube.com/watch?v=dQw4w9WgXcQ","<!DOCTYPE html>");
+        Node node0 = new Node("","0");
         Node node1 = new Node("1","1");
         Node node2 = new Node("11","2");
         Node node10 = new Node("1111111111","10");
@@ -15,6 +16,7 @@ public class Main {
         AVLTree avlTree = new AVLTree();
 
         avlTree.insertNode(node1);
+        avlTree.insertNode(node0);
         avlTree.insertNode(node2);
         avlTree.insertNode(node10);
         avlTree.insertNode(node8);
@@ -22,11 +24,12 @@ public class Main {
         avlTree.insertNode(node9);
         avlTree.insertNode(node15);
         avlTree.insertNode(node16);
-        /*avlTree.insertNode(node13);
+        avlTree.insertNode(node13);
         avlTree.insertNode(node12);
-        avlTree.insertNode(node14);*/
-        avlTree.deleteNode(node10);
-       // System.out.println(avlTree.findNodeByNode(new Node("11111","5")).getLengthKeyUrl());
+        avlTree.insertNode(node14);
+        avlTree.deleteNode(node1);
+        System.out.println(avlTree.findNodeByKey("11111111111111").getLengthKeyUrl());
+       //System.out.println(avlTree.findNodeByNode(new Node("11111","5")).getLengthKeyUrl());
         System.out.println("/");
      //  avlTree.printTree();
 

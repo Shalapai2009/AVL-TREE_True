@@ -74,10 +74,38 @@ public class AVLTree {
     }
     public void deleteNode(Node node){
         Node currentNode = findNodeByNode(node);
-        if (currentNode.getParent()==null){
-            if (currentNode.getRightChild() != null){
+        if (currentNode.getParent()==null){// Мы хотим удалить первый член дерева
+            if (currentNode.getLeftChild() == null & currentNode.getRightChild() == null) {//если у узла не было потомков
+                rootNode = null;
+            }
+            else if (currentNode.getLeftChild() == null & currentNode.getRightChild() != null){//если у узла был только один потомок
                 rootNode = currentNode.getRightChild();
-//Удаление первого элемента нормально не работает
+            }  else if (currentNode.getLeftChild() != null & currentNode.getRightChild() == null){//если у узла был только один потомок
+                rootNode = currentNode.getLeftChild();
+            }
+            else {//но что желать если существуют два ребенка
+                if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него дети
+//если да, то идем по левому до конца и меняем удаляемый на найденый
+                    Node rightNode = currentNode.getRightChild();
+                    while (rightNode.getLeftChild() != null) {
+                        rightNode = rightNode.getLeftChild();
+                    }
+                    if (rightNode.getRightChild() != null){
+                        rightNode = rightNode.getRightChild();
+                        currentNode.setCodeHtml(rightNode.getCodeHtml());
+                        currentNode.setKeyUrl(rightNode.getKeyUrl());
+                        rightNode.getParent().setRightChild(null);
+                    } else {
+                        currentNode.setCodeHtml(rightNode.getCodeHtml());
+                        currentNode.setKeyUrl(rightNode.getKeyUrl());
+                        rightNode.getParent().setLeftChild(null);
+                    }
+
+                } else {
+                    Node leftNode =  currentNode.getLeftChild();
+                    rootNode = currentNode.getRightChild();
+                    currentNode.getRightChild().setLeftChild(leftNode);
+                }
             }
         } else{
             if (currentNode.getRightChild() == null & currentNode.getLeftChild() == null){// если же у узла нет детей, то
@@ -91,17 +119,11 @@ public class AVLTree {
                 currentNode.getLeftChild().setParent(currentNode.getParent());// Отец ребенка заменяется его дедом
             }
             else if (currentNode.getRightChild() != null & currentNode.getLeftChild() == null) {
-                currentNode.getParent().setRightChild(currentNode.getRightChild());//83
-                currentNode.getRightChild().setParent(currentNode.getParent());//84
+                currentNode.getParent().setRightChild(currentNode.getRightChild());//100
+                currentNode.getRightChild().setParent(currentNode.getParent());//101
             }
             else if (currentNode.getRightChild() != null & currentNode.getLeftChild() != null){//но что желать если существуют два ребенка
-                if (currentNode.getRightChild().getLeftChild() == null & currentNode.getRightChild().getRightChild() == null){//проверяем правого ребенка есть ли у него дети
-//если нет то меняем значения родителя на ребенка, а ребенка дезинтергируем
-                    currentNode.setCodeHtml(currentNode.getRightChild().getCodeHtml());
-                    currentNode.setKeyUrl(currentNode.getRightChild().getKeyUrl());
-                    currentNode.setRightChild(null);
-//currentNode.getParent().setLeftChild(currentNode.getRightChild());
-                } else if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него дети
+                 if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него дети
 //если да, то идем по левому до конца и меняем удаляемый на найденый
                     Node rightNode = currentNode.getRightChild();
                     while (rightNode.getLeftChild() != null) {
@@ -119,7 +141,10 @@ public class AVLTree {
                     }
 
                 } else {
-
+                   Node leftNode =  currentNode.getLeftChild();
+                   currentNode.getParent().setRightChild(currentNode.getRightChild());
+                   currentNode.getRightChild().setLeftChild(leftNode);
+                   currentNode.getRightChild().setParent(currentNode.getParent());
                 }
             }
         }}
