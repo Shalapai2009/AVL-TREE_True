@@ -73,44 +73,56 @@ public class AVLTree {
         //return null;
     }
     public void deleteNode(Node node){
-       Node currentNode = findNodeByNode(node);
+        Node currentNode = findNodeByNode(node);
         if (currentNode.getParent()==null){
             if (currentNode.getRightChild() != null){
                 rootNode = currentNode.getRightChild();
-                //Удаление первого элемента нормально не работает
+//Удаление первого элемента нормально не работает
             }
         } else{
-        if (currentNode.getRightChild() == null & currentNode.getLeftChild() == null){// если же у узла нет детей, то
-            currentNode = currentNode.getParent(); //откатываемся до его Бати
-            if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null){ // проверяем правым или левым был узел
-            currentNode.setLeftChild(null);}//обнуляем узел
-            else {currentNode.setRightChild(null);}//79
+            if (currentNode.getRightChild() == null & currentNode.getLeftChild() == null){// если же у узла нет детей, то
+                currentNode = currentNode.getParent(); //откатываемся до его Бати
+                if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null){ // проверяем правым или левым был узел
+                    currentNode.setLeftChild(null);}//обнуляем узел
+                else {currentNode.setRightChild(null);}//79
 
-        } else if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null) {
-            currentNode.getParent().setLeftChild(currentNode.getLeftChild());// Перемещаемся до Бати и даем ему ребенка его ребенка. Внук становится сыном, пиздец
-            currentNode.getLeftChild().setParent(currentNode.getParent());// Отец ребенка заменяется его дедом
-        }
-        else if (currentNode.getRightChild() != null & currentNode.getLeftChild() == null) {
-            currentNode.getParent().setRightChild(currentNode.getRightChild());//83
-            currentNode.getRightChild().setParent(currentNode.getParent());//84
-        }
-        else if (currentNode.getRightChild() != null & currentNode.getLeftChild() != null){//но что желать если существуют два ребенка
-            if (currentNode.getRightChild().getLeftChild() == null & currentNode.getRightChild().getRightChild() == null){//проверяем правого ребенка есть ли у него дети
-            //если нет то меняем значения родителя на ребенка, а ребенка дезинтергируем
-                currentNode.setCodeHtml(currentNode.getRightChild().getCodeHtml());
-                currentNode.setKeyUrl(currentNode.getRightChild().getKeyUrl());
-                currentNode.setRightChild(null);
-                //currentNode.getParent().setLeftChild(currentNode.getRightChild());
-            } else  if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него дети
-            Node rightNode = currentNode.getRightChild();
-                while (rightNode.getLeftChild() != null) {
-                    rightNode = rightNode.getLeftChild();
+            } else if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null) {
+                currentNode.getParent().setLeftChild(currentNode.getLeftChild());// Перемещаемся до Бати и даем ему ребенка его ребенка. Внук становится сыном, пиздец
+                currentNode.getLeftChild().setParent(currentNode.getParent());// Отец ребенка заменяется его дедом
             }
+            else if (currentNode.getRightChild() != null & currentNode.getLeftChild() == null) {
+                currentNode.getParent().setRightChild(currentNode.getRightChild());//83
+                currentNode.getRightChild().setParent(currentNode.getParent());//84
+            }
+            else if (currentNode.getRightChild() != null & currentNode.getLeftChild() != null){//но что желать если существуют два ребенка
+                if (currentNode.getRightChild().getLeftChild() == null & currentNode.getRightChild().getRightChild() == null){//проверяем правого ребенка есть ли у него дети
+//если нет то меняем значения родителя на ребенка, а ребенка дезинтергируем
+                    currentNode.setCodeHtml(currentNode.getRightChild().getCodeHtml());
+                    currentNode.setKeyUrl(currentNode.getRightChild().getKeyUrl());
+                    currentNode.setRightChild(null);
+//currentNode.getParent().setLeftChild(currentNode.getRightChild());
+                } else if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него дети
+//если да, то идем по левому до конца и меняем удаляемый на найденый
+                    Node rightNode = currentNode.getRightChild();
+                    while (rightNode.getLeftChild() != null) {
+                        rightNode = rightNode.getLeftChild();
+                    }
+                    if (rightNode.getRightChild() != null){
+                        rightNode = rightNode.getRightChild();
+                        currentNode.setCodeHtml(rightNode.getCodeHtml());
+                        currentNode.setKeyUrl(rightNode.getKeyUrl());
+                        rightNode.getParent().setRightChild(null);
+                    } else {
+                    currentNode.setCodeHtml(rightNode.getCodeHtml());
+                    currentNode.setKeyUrl(rightNode.getKeyUrl());
+                    rightNode.getParent().setLeftChild(null);
+                    }
 
+                } else {
 
+                }
             }
-            }
-    }}
+        }}
     public void printTree() { // метод для вывода дерева в консоль
         Stack globalStack = new Stack(); // общий стек для значений дерева
         globalStack.push(rootNode);
