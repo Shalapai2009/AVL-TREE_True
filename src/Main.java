@@ -27,8 +27,8 @@ public class Main {
         avlTree.insertNode(node13);
         avlTree.insertNode(node12);
         avlTree.insertNode(node14);
-        avlTree.deleteNode(node1);
-        System.out.println(avlTree.findNodeByKey("11111111111111").getLengthKeyUrl());
+        avlTree.deleteNode(node10);
+        //System.out.println(avlTree.findNodeByKey("11111111111111").getLengthKeyUrl());
        //System.out.println(avlTree.findNodeByNode(new Node("11111","5")).getLengthKeyUrl());
         System.out.println("/");
      //  avlTree.printTree();

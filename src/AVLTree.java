@@ -112,15 +112,15 @@ public class AVLTree {
                 currentNode = currentNode.getParent(); //откатываемся до его Бати
                 if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null){ // проверяем правым или левым был узел
                     currentNode.setLeftChild(null);}//обнуляем узел
-                else {currentNode.setRightChild(null);}//79
+                else {currentNode.setRightChild(null);}
 
             } else if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null) {
                 currentNode.getParent().setLeftChild(currentNode.getLeftChild());// Перемещаемся до Бати и даем ему ребенка его ребенка. Внук становится сыном, пиздец
                 currentNode.getLeftChild().setParent(currentNode.getParent());// Отец ребенка заменяется его дедом
             }
             else if (currentNode.getRightChild() != null & currentNode.getLeftChild() == null) {
-                currentNode.getParent().setRightChild(currentNode.getRightChild());//100
-                currentNode.getRightChild().setParent(currentNode.getParent());//101
+                currentNode.getParent().setRightChild(currentNode.getRightChild());//118
+                currentNode.getRightChild().setParent(currentNode.getParent());//119
             }
             else if (currentNode.getRightChild() != null & currentNode.getLeftChild() != null){//но что желать если существуют два ребенка
                  if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него дети

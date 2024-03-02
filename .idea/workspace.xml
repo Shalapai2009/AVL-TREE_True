@@ -43,7 +43,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/User/IdeaProjects/AVL-Tree"
+    "last_opened_file_path": "C:/Users/User/IdeaProjects/AVL-Tree_True"
   }
 }]]></component>
   <component name="RunManager">
@@ -134,7 +134,14 @@
       <option name="project" value="LOCAL" />
       <updated>1709060188402</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="new">
+      <created>1709063644508</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1709063644508</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -169,7 +176,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>31</line>
+          <line>32</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
