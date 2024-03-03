@@ -1,8 +1,10 @@
 import java.math.BigInteger;
 
 public class Node {
+
     private String keyUrl;
     private String codeHtml;
+    private int height = 0;
     private Node parent; // Батя
     private Node leftChild; // Левый узел потомок
     private Node rightChild; // Правый узел потомок
@@ -17,7 +19,21 @@ public class Node {
     public String getCodeHtml(){
         return codeHtml;
     }
+    public int getHeight(){
+        return height;
+    }
+    public int getLeftChildHeight(){
+        if (leftChild==null) {return -1;}else{
+        return height;}
+    }
+    public int getRightChildHeight(){
+        if (rightChild==null){return -1;}else{
+            return height;}
+    }
 
+    public void setHeight(int height) {
+        this.height = height;
+    }
     public void setCodeHtml(String codeHtml) {
         this.codeHtml = codeHtml;
     }

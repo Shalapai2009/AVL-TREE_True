@@ -10,6 +10,7 @@ public class AVLTree {
     public void insertNode(Node node){
         if (rootNode == null){
             rootNode = node;
+            updateHeight(node);
         }
         else {
             Node currentNode = rootNode; // начинаем с корневого узла
@@ -19,7 +20,8 @@ public class AVLTree {
 
                         currentNode.setLeftChild(node);
                         currentNode.getLeftChild().setParent(currentNode);
-                    return;}
+                        updateHeight(currentNode);
+                        return;}
                     else {
                         currentNode = currentNode.getLeftChild();
                     }
@@ -28,6 +30,7 @@ public class AVLTree {
                     if (currentNode.getRightChild() == null){
                         currentNode.setRightChild(node);
                         currentNode.getRightChild().setParent(currentNode);
+                        updateHeight(currentNode);
                         return;
                     }
                     else {
@@ -35,8 +38,11 @@ public class AVLTree {
 
                     }
                 }
+
             }
+
         }
+
     }
     public Node findNodeByKey(String keyUrl){
             String key = keyUrl;
@@ -84,70 +90,74 @@ public class AVLTree {
                 rootNode = currentNode.getLeftChild();
             }
             else {//но что желать если существуют два ребенка
-                if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него дети
+                if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него правый ребенок
 //если да, то идем по левому до конца и меняем удаляемый на найденый
                     Node rightNode = currentNode.getRightChild();
-                    while (rightNode.getLeftChild() != null) {
-                        rightNode = rightNode.getLeftChild();
+                    while ((rightNode.getLeftChild() != null) | (rightNode.getRightChild() != null)){
+                        if (rightNode.getLeftChild() != null){
+                            rightNode = rightNode.getLeftChild();}
+                        else rightNode = rightNode.getRightChild();
                     }
-                    if (rightNode.getRightChild() != null){
-                        rightNode = rightNode.getRightChild();
-                        currentNode.setCodeHtml(rightNode.getCodeHtml());
-                        currentNode.setKeyUrl(rightNode.getKeyUrl());
-                        rightNode.getParent().setRightChild(null);
-                    } else {
-                        currentNode.setCodeHtml(rightNode.getCodeHtml());
-                        currentNode.setKeyUrl(rightNode.getKeyUrl());
-                        rightNode.getParent().setLeftChild(null);
-                    }
+                    //удаляем из дерева нужный нам узел и даем его свойства корню, делается это все вместо того, чтобы опускать верхний корень до низу и удалять его
+                    deleteNode(rightNode);
+                    currentNode.setCodeHtml(rightNode.getCodeHtml());
+                    currentNode.setKeyUrl(rightNode.getKeyUrl());
 
                 } else {
+                    //если нет, то перезаписываем дерево на правого ребенка, и даем ему левого ребенка начального дерева, попутно перезаписывая отца левого ребенка на правого ребенка
                     Node leftNode =  currentNode.getLeftChild();
                     rootNode = currentNode.getRightChild();
+                    leftNode.setParent(currentNode.getRightChild());
                     currentNode.getRightChild().setLeftChild(leftNode);
+                    currentNode.getRightChild().setParent(null);
                 }
             }
-        } else{
+        } else {
             if (currentNode.getRightChild() == null & currentNode.getLeftChild() == null){// если же у узла нет детей, то
                 currentNode = currentNode.getParent(); //откатываемся до его Бати
                 if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null){ // проверяем правым или левым был узел
                     currentNode.setLeftChild(null);}//обнуляем узел
                 else {currentNode.setRightChild(null);}
 
-            } else if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null) {
-                currentNode.getParent().setLeftChild(currentNode.getLeftChild());// Перемещаемся до Бати и даем ему ребенка его ребенка. Внук становится сыном, пиздец
+            } else if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null) { // если есть только правый ребенок
+                currentNode.getParent().setLeftChild(currentNode.getLeftChild());// Перемещаемся до Бати и даем ему ребенка его ребенка. Внук становится сыном, *****
                 currentNode.getLeftChild().setParent(currentNode.getParent());// Отец ребенка заменяется его дедом
             }
-            else if (currentNode.getRightChild() != null & currentNode.getLeftChild() == null) {
-                currentNode.getParent().setRightChild(currentNode.getRightChild());//118
-                currentNode.getRightChild().setParent(currentNode.getParent());//119
+            else if (currentNode.getRightChild() != null & currentNode.getLeftChild() == null) { // если есть только левый ребенок
+                currentNode.getParent().setRightChild(currentNode.getRightChild());//117
+                currentNode.getRightChild().setParent(currentNode.getParent());//118
             }
             else if (currentNode.getRightChild() != null & currentNode.getLeftChild() != null){//но что желать если существуют два ребенка
                  if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него дети
 //если да, то идем по левому до конца и меняем удаляемый на найденый
                     Node rightNode = currentNode.getRightChild();
-                    while (rightNode.getLeftChild() != null) {
-                        rightNode = rightNode.getLeftChild();
+                    while ((rightNode.getLeftChild() != null) | (rightNode.getRightChild() != null) ) {
+                        if (rightNode.getLeftChild() != null){
+                        rightNode = rightNode.getLeftChild();}
+                        else rightNode = rightNode.getRightChild();
                     }
-                    if (rightNode.getRightChild() != null){
-                        rightNode = rightNode.getRightChild();
-                        currentNode.setCodeHtml(rightNode.getCodeHtml());
-                        currentNode.setKeyUrl(rightNode.getKeyUrl());
-                        rightNode.getParent().setRightChild(null);
-                    } else {
+                    deleteNode(rightNode);// хехе недорекурсия
                     currentNode.setCodeHtml(rightNode.getCodeHtml());
                     currentNode.setKeyUrl(rightNode.getKeyUrl());
-                    rightNode.getParent().setLeftChild(null);
-                    }
-
                 } else {
+                     //если нет, то перезаписываем дерево на правого ребенка, и даем ему левого ребенка начального дерева попутно перезаписывая отца левого ребенка на правого ребенка
                    Node leftNode =  currentNode.getLeftChild();
                    currentNode.getParent().setRightChild(currentNode.getRightChild());
+                   leftNode.setParent(currentNode.getRightChild());
                    currentNode.getRightChild().setLeftChild(leftNode);
                    currentNode.getRightChild().setParent(currentNode.getParent());
                 }
             }
         }}
+    private void updateHeight(Node node){
+        node.setHeight(Math.max((node.getLeftChildHeight()), (node.getRightChildHeight()))+1);
+    }
+    private int getBalance(Node node){
+            return node.getRightChildHeight() - node.getLeftChildHeight();
+    }
+    private void RecalculationBalanceFactor(Node node){
+        findNodeByNode(node);
+    }
     public void printTree() { // метод для вывода дерева в консоль
         Stack globalStack = new Stack(); // общий стек для значений дерева
         globalStack.push(rootNode);
