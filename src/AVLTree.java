@@ -90,19 +90,21 @@ public class AVLTree {
                 rootNode = currentNode.getLeftChild();
             }
             else {//но что желать если существуют два ребенка
-                if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него правый ребенок
+                if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него дети
 //если да, то идем по левому до конца и меняем удаляемый на найденый
                     Node rightNode = currentNode.getRightChild();
-                    while ((rightNode.getLeftChild() != null) | (rightNode.getRightChild() != null)){
-                        if (rightNode.getLeftChild() != null){
-                            rightNode = rightNode.getLeftChild();}
-                        else rightNode = rightNode.getRightChild();
+                    while (rightNode.getLeftChild() != null){
+                        rightNode = rightNode.getLeftChild();
                     }
-                    //удаляем из дерева нужный нам узел и даем его свойства корню, делается это все вместо того, чтобы опускать верхний корень до низу и удалять его
-                    deleteNode(rightNode);
-                    currentNode.setCodeHtml(rightNode.getCodeHtml());
-                    currentNode.setKeyUrl(rightNode.getKeyUrl());
-
+                    if (rightNode.getRightChild() != null){
+                        rightNode.getParent().setLeftChild(rightNode.getRightChild());
+                        rightNode.getRightChild().setParent(rightNode.getParent());
+                        currentNode.setCodeHtml(rightNode.getCodeHtml());
+                        currentNode.setKeyUrl(rightNode.getKeyUrl());
+                    } else  {
+                        deleteNode(rightNode);// хехе недорекурсия
+                        currentNode.setCodeHtml(rightNode.getCodeHtml());
+                        currentNode.setKeyUrl(rightNode.getKeyUrl());}
                 } else {
                     //если нет, то перезаписываем дерево на правого ребенка, и даем ему левого ребенка начального дерева, попутно перезаписывая отца левого ребенка на правого ребенка
                     Node leftNode =  currentNode.getLeftChild();
@@ -131,14 +133,18 @@ public class AVLTree {
                  if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него дети
 //если да, то идем по левому до конца и меняем удаляемый на найденый
                     Node rightNode = currentNode.getRightChild();
-                    while ((rightNode.getLeftChild() != null) | (rightNode.getRightChild() != null) ) {
-                        if (rightNode.getLeftChild() != null){
-                        rightNode = rightNode.getLeftChild();}
-                        else rightNode = rightNode.getRightChild();
+                    while (rightNode.getLeftChild() != null){
+                        rightNode = rightNode.getLeftChild();
                     }
+                    if (rightNode.getRightChild() != null){
+                        rightNode.getParent().setLeftChild(rightNode.getRightChild());
+                        rightNode.getRightChild().setParent(rightNode.getParent());
+                        currentNode.setCodeHtml(rightNode.getCodeHtml());
+                        currentNode.setKeyUrl(rightNode.getKeyUrl());
+                    } else  {
                     deleteNode(rightNode);// хехе недорекурсия
                     currentNode.setCodeHtml(rightNode.getCodeHtml());
-                    currentNode.setKeyUrl(rightNode.getKeyUrl());
+                    currentNode.setKeyUrl(rightNode.getKeyUrl());}
                 } else {
                      //если нет, то перезаписываем дерево на правого ребенка, и даем ему левого ребенка начального дерева попутно перезаписывая отца левого ребенка на правого ребенка
                    Node leftNode =  currentNode.getLeftChild();
@@ -152,13 +158,18 @@ public class AVLTree {
     private void updateHeight(Node node){
         Node currentNode = node;
         while (currentNode != null){
-        int maxHeight = (Math.max((currentNode.getLeftChildHeight()), (currentNode.getRightChildHeight()))+1);
+            int maxHeight = (Math.max((currentNode.getLeftChildHeight()), (currentNode.getRightChildHeight())));
+            if ((currentNode.getLeftChildHeight()) != -1 | (currentNode.getRightChildHeight()) !=-1) {
+                maxHeight+=1;
+            }
         currentNode.setHeight(maxHeight);
         currentNode = currentNode.getParent();
         }
     }
     private int getBalance(Node node){
-            return node.getRightChildHeight() - node.getLeftChildHeight();
+        Node currentNode = node;
+
+        return node.getRightChildHeight() - node.getLeftChildHeight();
     }
     private void RecalculationBalanceFactor(Node node){
         findNodeByNode(node);
