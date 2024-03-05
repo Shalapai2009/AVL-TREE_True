@@ -34,7 +34,7 @@ public class Main {
         avlTree.insertNode(node3);
         avlTree.insertNode(node4);*/
        // avlTree.deleteNode(node2);
-        avlTree.findNodeByNode(node4);
+        //avlTree.findNodeByNode(node4);
         //System.out.println(avlTree.findNodeByKey("11111111111111").getLengthKeyUrl());
        //System.out.println(avlTree.findNodeByNode(new Node("11111","5")).getLengthKeyUrl());
         System.out.println("/");

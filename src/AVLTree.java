@@ -158,10 +158,7 @@ public class AVLTree {
     private void updateHeight(Node node){
         Node currentNode = node;
         while (currentNode != null){
-            int maxHeight = (Math.max((currentNode.getLeftChildHeight()), (currentNode.getRightChildHeight())));
-            if ((currentNode.getLeftChildHeight()) != -1 | (currentNode.getRightChildHeight()) !=-1) {
-                maxHeight+=1;
-            }
+        int maxHeight = (Math.max((currentNode.getLeftChildHeight()), (currentNode.getRightChildHeight()))+1);
         currentNode.setHeight(maxHeight);
         currentNode = currentNode.getParent();
         }
