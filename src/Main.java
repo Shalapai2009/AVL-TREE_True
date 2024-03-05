@@ -7,7 +7,7 @@ public class Main {
         Node node3 = new Node("111","3");
         Node node4 = new Node("1111","4");
         Node node5 = new Node("11111","5");
-        Node node6 = new Node("111111","6");
+       /* Node node6 = new Node("111111","6");
         Node node10 = new Node("1111111111","10");
         Node node8 = new Node("11111111","8");
         Node node7 = new Node("1111111","7");
@@ -16,7 +16,7 @@ public class Main {
         Node node16 = new Node("1111111111111111","16");
         Node node13 = new Node("1111111111111","13");
         Node node12 = new Node("111111111111","12");
-        Node node14 = new Node("11111111111111","14");
+        Node node14 = new Node("11111111111111","14");*/
         AVLTree avlTree = new AVLTree();
 
         //avlTree.insertNode(node0);

@@ -150,7 +150,12 @@ public class AVLTree {
             }
         }}
     private void updateHeight(Node node){
-        node.setHeight(Math.max((node.getLeftChildHeight()), (node.getRightChildHeight()))+1);
+        Node currentNode = node;
+        while (currentNode != null){
+        int maxHeight = (Math.max((currentNode.getLeftChildHeight()), (currentNode.getRightChildHeight()))+1);
+        currentNode.setHeight(maxHeight);
+        currentNode = currentNode.getParent();
+        }
     }
     private int getBalance(Node node){
             return node.getRightChildHeight() - node.getLeftChildHeight();
