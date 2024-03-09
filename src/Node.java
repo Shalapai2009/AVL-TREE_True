@@ -24,11 +24,11 @@ public class Node {
     }
     public int getLeftChildHeight(){
         if (leftChild==null) {return -1;}else{
-        return height;}
+        return height;}//ГОВНИЩЕ А НЕ КОД
     }
     public int getRightChildHeight(){
         if (rightChild==null){return -1;}else{
-            return height;}
+            return height;}//ТРИЖДЫ ПЕРЕВАРЕННЫЙ КАЛ
     }
 
     public void setHeight(int height) {
