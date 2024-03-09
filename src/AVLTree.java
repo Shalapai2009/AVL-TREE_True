@@ -84,60 +84,55 @@ public class AVLTree {
             if (currentNode.getLeftChild() == null & currentNode.getRightChild() == null) {//если у узла не было потомков
                 rootNode = null;
             }
-            else if (currentNode.getLeftChild() == null & currentNode.getRightChild() != null){//если у узла был только один потомок
+            else if (currentNode.getLeftChild() == null & currentNode.getRightChild() != null){//если у узла был только ПРАВЫЙ один потомок
                 rootNode = currentNode.getRightChild();
-                updateHeight(currentNode);
-            }  else if (currentNode.getLeftChild() != null & currentNode.getRightChild() == null){//если у узла был только один потомок
+                rootNode.setParent(null);
+            }  else if (currentNode.getLeftChild() != null & currentNode.getRightChild() == null){//если у узла был только ЛЕВЫЙ один потомок
                 rootNode = currentNode.getLeftChild();
-                updateHeight(currentNode);
+                rootNode.setParent(null);
             }
             else {//но что желать если существуют два ребенка
-                if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него дети
+                if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него левый ребенок
 //если да, то идем по левому до конца и меняем удаляемый на найденый
                     Node rightNode = currentNode.getRightChild();
                     while (rightNode.getLeftChild() != null){
                         rightNode = rightNode.getLeftChild();
-
                     }
-                    if (rightNode.getRightChild() != null){
-                        rightNode.getParent().setLeftChild(rightNode.getRightChild());
-                        rightNode.getRightChild().setParent(rightNode.getParent());
-                        currentNode.setCodeHtml(rightNode.getCodeHtml());
-                        currentNode.setKeyUrl(rightNode.getKeyUrl());
-                      //  updateHeight(rightNode.getRightChild());// ВОЗМОЖНА НЕСОСТЫКОВКА НЕОБХОДИМО ПРОВЕРИТЬ И ПОФИКСИТЬ
-                    } else  {
-                        deleteNode(rightNode);// хехе недорекурсия
-                        currentNode.setCodeHtml(rightNode.getCodeHtml());
-                        currentNode.setKeyUrl(rightNode.getKeyUrl());
-                       // updateHeight(rightNode.getParent());
-                    }
+                    deleteNode(rightNode);
+                    currentNode.setCodeHtml(rightNode.getCodeHtml());
+                    currentNode.setKeyUrl(rightNode.getKeyUrl());
 
                 } else {
                     //если нет, то перезаписываем дерево на правого ребенка, и даем ему левого ребенка начального дерева, попутно перезаписывая отца левого ребенка на правого ребенка
                     Node leftNode =  currentNode.getLeftChild();
                     rootNode = currentNode.getRightChild();
-                    leftNode.setParent(currentNode.getRightChild());
-                    currentNode.getRightChild().setLeftChild(leftNode);
-                    currentNode.getRightChild().setParent(null);
+                    leftNode.setParent(rootNode);
+                    rootNode.setLeftChild(leftNode);
+                    rootNode.setParent(null);
                     //updateHeight(currentNode.getLeftChild());
+                    // АХТУНГ КОРРЕКТНАЯ РАБОТА СЧЕТЧИКА ВЫСОТЫ НЕ ПРОВЕРЯЛАСЬ В ПОЛНОЙ МЕРЕ
                 }
             }
         } else {
             if (currentNode.getRightChild() == null & currentNode.getLeftChild() == null){// если же у узла нет детей, то
-                currentNode = currentNode.getParent(); //откатываемся до его Бати
-                if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null){ // проверяем правым или левым был узел
-                    currentNode.setLeftChild(null);}//обнуляем узел
-                else {currentNode.setRightChild(null);}
-                //updateHeight(currentNode.getParent());
+                if (currentNode.getParent().getRightChild() == currentNode){
+                    currentNode.getParent().setRightChild(null);
+                } else currentNode.getParent().setLeftChild(null);
+                updateHeight(currentNode.getParent());
+
             } else if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null) { // если есть только ЛЕВЫЙ ребенок
-                currentNode.getParent().setLeftChild(currentNode.getLeftChild());// Перемещаемся до Бати и даем ему ребенка его ребенка. Внук становится сыном, *****
-                currentNode.getLeftChild().setParent(currentNode.getParent());// Отец ребенка заменяется его дедом
-               // updateHeight(currentNode.getLeftChild());
+                if (currentNode.getParent().getRightChild() == currentNode){
+                    currentNode.getParent().setRightChild(null);
+                } else {currentNode.getParent().setLeftChild(null);}
+                insertNode(currentNode.getLeftChild());
+
             }
             else if (currentNode.getRightChild() != null & currentNode.getLeftChild() == null) { // если есть только ПРАВЫЙ ребенок
-                currentNode.getParent().setRightChild(currentNode.getRightChild());//131
-                currentNode.getRightChild().setParent(currentNode.getParent());//132
-                //updateHeight(findNodeWithMaxHeight(currentNode));
+                    if (currentNode.getParent().getRightChild() == currentNode){
+                        currentNode.getParent().setRightChild(null);
+                        insertNode(currentNode.getRightChild());
+                    } else {currentNode.getParent().setLeftChild(null);}
+                    insertNode(currentNode.getRightChild());
             }
             else if (currentNode.getRightChild() != null & currentNode.getLeftChild() != null){//но что желать если существуют два ребенка
                  if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него дети
@@ -146,7 +141,11 @@ public class AVLTree {
                     while (rightNode.getLeftChild() != null){
                         rightNode = rightNode.getLeftChild();
                     }
-                    if (rightNode.getRightChild() != null){
+                    deleteNode(rightNode);
+                    currentNode.setCodeHtml(rightNode.getCodeHtml());
+                    currentNode.setKeyUrl(rightNode.getKeyUrl());
+
+                    /*if (rightNode.getRightChild() != null){
                         rightNode.getParent().setLeftChild(rightNode.getRightChild());
                         rightNode.getRightChild().setParent(rightNode.getParent());
                         currentNode.setCodeHtml(rightNode.getCodeHtml());
@@ -158,7 +157,7 @@ public class AVLTree {
                     currentNode.setCodeHtml(rightNode.getCodeHtml());
                     currentNode.setKeyUrl(rightNode.getKeyUrl());
                      //   updateHeight(rightNode.getParent());
-                    }
+                    }*/
                 } else {
                      //если нет, то перезаписываем дерево на правого ребенка, и даем ему левого ребенка начального дерева попутно перезаписывая отца левого ребенка на правого ребенка
                    Node leftNode =  currentNode.getLeftChild();
@@ -167,6 +166,8 @@ public class AVLTree {
                    currentNode.getRightChild().setLeftChild(leftNode);
                    currentNode.getRightChild().setParent(currentNode.getParent());
                     // updateHeight(currentNode.getLeftChild());
+                     //СТРАШНОЕ НЕДОПРОВЕРЕННОЕ МЕСТО
+                     // АХТУНГ КОРРЕКТНАЯ РАБОТА СЧЕТЧИКА ВЫСОТЫ НЕ ПРОВЕРЯЛАСЬ В ПОЛНОЙ МЕРЕ
                 }
             }
         }}
@@ -200,16 +201,6 @@ public class AVLTree {
             currentNode.setHeight(maxHeight);
             currentNode = currentNode.getParent();
         }
-    }
-    private Node findNodeWithMaxHeight(Node node){
-        Node currentNode = node;
-        while (currentNode.getHeight() > 0){
-        if (currentNode.getHeight()-1 == currentNode.getRightChildHeight()){
-            currentNode= currentNode.getRightChild();
-        }
-        else {currentNode = currentNode.getLeftChild();}
-        }
-    return currentNode;
     }
     private int getBalance(Node node){
         Node currentNode = node;
