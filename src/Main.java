@@ -20,7 +20,7 @@ public class Main {
         Node node14 = new Node("11111111111111","14");*/
         AVLTree avlTree = new AVLTree();
 
-        avlTree.insertNode(node0);
+        /*avlTree.insertNode(node0);
         avlTree.insertNode(node2);
         avlTree.insertNode(node1);
         avlTree.insertNode(node6);
@@ -28,14 +28,20 @@ public class Main {
         avlTree.insertNode(node8);
         avlTree.insertNode(node3);
         avlTree.insertNode(node5);
+        avlTree.insertNode(node4);*/
+
         avlTree.insertNode(node4);
+        avlTree.insertNode(node5);
+        avlTree.insertNode(node2);
+        avlTree.insertNode(node3);
+        avlTree.insertNode(node1);
+        avlTree.insertNode(node0);
 
         /*avlTree.insertNode(node1);
         avlTree.insertNode(node2);
         avlTree.insertNode(node3);
         avlTree.insertNode(node4);*/
-
-        avlTree.deleteNode(node2);
+        //avlTree.deleteNode(node2);
         //avlTree.findNodeByNode(node4);
         //System.out.println(avlTree.findNodeByKey("11111111111111").getLengthKeyUrl());
        //System.out.println(avlTree.findNodeByNode(new Node("11111","5")).getLengthKeyUrl());

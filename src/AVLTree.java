@@ -21,6 +21,7 @@ public class AVLTree {
                         currentNode.setLeftChild(node);
                         currentNode.getLeftChild().setParent(currentNode);
                         updateHeight(currentNode);
+                        balance(rootNode);
                         return;}
                     else {
                         currentNode = currentNode.getLeftChild();
@@ -31,6 +32,7 @@ public class AVLTree {
                         currentNode.setRightChild(node);
                         currentNode.getRightChild().setParent(currentNode);
                         updateHeight(currentNode);
+                        balance(rootNode);
                         return;
                     }
                     else {
@@ -119,13 +121,13 @@ public class AVLTree {
                     currentNode.getParent().setRightChild(null);
                 } else currentNode.getParent().setLeftChild(null);
                 updateHeight(currentNode.getParent());
-
+                balance(rootNode);
             } else if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null) { // если есть только ЛЕВЫЙ ребенок
                 if (currentNode.getParent().getRightChild() == currentNode){
                     currentNode.getParent().setRightChild(null);
                 } else {currentNode.getParent().setLeftChild(null);}
                 insertNode(currentNode.getLeftChild());
-
+                balance(rootNode);
             }
             else if (currentNode.getRightChild() != null & currentNode.getLeftChild() == null) { // если есть только ПРАВЫЙ ребенок
                     if (currentNode.getParent().getRightChild() == currentNode){
@@ -133,6 +135,7 @@ public class AVLTree {
                         insertNode(currentNode.getRightChild());
                     } else {currentNode.getParent().setLeftChild(null);}
                     insertNode(currentNode.getRightChild());
+                    balance(rootNode);
             }
             else if (currentNode.getRightChild() != null & currentNode.getLeftChild() != null){//но что желать если существуют два ребенка
                  if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него дети
@@ -144,7 +147,7 @@ public class AVLTree {
                     deleteNode(rightNode);
                     currentNode.setCodeHtml(rightNode.getCodeHtml());
                     currentNode.setKeyUrl(rightNode.getKeyUrl());
-
+                     balance(rootNode);
                     /*if (rightNode.getRightChild() != null){
                         rightNode.getParent().setLeftChild(rightNode.getRightChild());
                         rightNode.getRightChild().setParent(rightNode.getParent());
@@ -165,6 +168,7 @@ public class AVLTree {
                    leftNode.setParent(currentNode.getRightChild());
                    currentNode.getRightChild().setLeftChild(leftNode);
                    currentNode.getRightChild().setParent(currentNode.getParent());
+                   balance(rootNode);
                     // updateHeight(currentNode.getLeftChild());
                      //СТРАШНОЕ НЕДОПРОВЕРЕННОЕ МЕСТО
                      // АХТУНГ КОРРЕКТНАЯ РАБОТА СЧЕТЧИКА ВЫСОТЫ НЕ ПРОВЕРЯЛАСЬ В ПОЛНОЙ МЕРЕ
@@ -202,13 +206,75 @@ public class AVLTree {
             currentNode = currentNode.getParent();
         }
     }
-    private int getBalance(Node node){
+    public int getBalance(Node node){
         Node currentNode = node;
+        int rightChild;
+        int leftChild;
+        if (currentNode.getRightChild() == null){
+            rightChild = -1;
+        } else {rightChild = currentNode.getRightChild().getHeight();}
+        if (currentNode.getLeftChild() ==null){
+            leftChild = -1;
+        } else {leftChild = currentNode.getLeftChild().getHeight();}
+        return rightChild - leftChild;
+    }
+    private void supportingSwap(Node firstNode, Node secondNode){
+       String firstKey = firstNode.getKeyUrl();
+       String firstCode = firstNode.getCodeHtml();
+       Node firstParent = firstNode.getParent();
 
-        return node.getRightChildHeight() - node.getLeftChildHeight();
+       String secondKey = secondNode.getKeyUrl();
+       String secondCode = secondNode.getCodeHtml();
+       Node secondParent = secondNode.getParent();
+       firstNode.setKeyUrl(secondKey);
+       firstNode.setCodeHtml(secondCode);
+       //firstNode.setParent(secondParent);
+
+       secondNode.setKeyUrl(firstKey);
+       secondNode.setCodeHtml(firstCode);
+       //secondNode.setParent(firstParent);
+    }
+    private void rightRotate(Node node){
+        supportingSwap(node, node.getLeftChild());
+        Node buffer = node.getRightChild();
+        node.setRightChild(node.getLeftChild());
+        node.setLeftChild(node.getRightChild().getLeftChild());
+        node.getRightChild().setLeftChild(node.getRightChild().getRightChild());
+        node.getRightChild().setRightChild(buffer);
+        updateHeight(node.getRightChild());
+    }
+    private void leftRotate(Node node){
+        supportingSwap(node,node.getRightChild());
+        Node buffer = node.getLeftChild();
+        node.setLeftChild(node.getRightChild());
+        node.setRightChild(node.getLeftChild().getRightChild());
+        node.getRightChild().setLeftChild(node.getRightChild().getRightChild());
+        node.getLeftChild().setRightChild(node.getLeftChild().getLeftChild());
+        node.getLeftChild().setLeftChild(buffer);
+        updateHeight(node.getLeftChild());
+    }
+    private void balance(Node node){
+        int balance = getBalance(node);
+        if (balance == -2){
+            if (getBalance(node.getLeftChild()) == 1){
+                leftRotate(node.getLeftChild());
+            }
+            rightRotate(node);
+        }
+        else if (balance ==2){
+            if(getBalance(node.getRightChild())==-1){
+                rightRotate(node.getRightChild());
+            }
+            leftRotate(node);
+        }
+
     }
     private void RecalculationBalanceFactor(Node node){
         findNodeByNode(node);
+    }
+    private void desintegrateNode(Node node){
+        findNodeByNode(node);
+
     }
     public void printTree() { // метод для вывода дерева в консоль
         Stack globalStack = new Stack(); // общий стек для значений дерева

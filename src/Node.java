@@ -22,14 +22,28 @@ public class Node {
     public int getHeight(){
         return height;
     }
-    public int getLeftChildHeight(){
+    /*public int getLeftChildHeight(){
         if (leftChild==null) {return -1;}else{
         return height;}//ГОВНИЩЕ А НЕ КОД
-    }
-    public int getRightChildHeight(){
+    }*/
+   /* public int getRightChildHeight(){
         if (rightChild==null){return -1;}else{
             return height;}//ТРИЖДЫ ПЕРЕВАРЕННЫЙ КАЛ
-    }
+    }*/
+   /* private int getBalance(Node node){
+        Node currentNode = node;
+        int rightChild;
+        int leftChild;
+        if (currentNode.getRightChild() ==null){
+            rightChild = -1;
+        } else {rightChild = currentNode.getRightChild().getHeight();}
+        if (currentNode.getLeftChild() ==null){
+            leftChild = -1;
+        } else {leftChild = currentNode.getLeftChild().getHeight();}
+
+
+        return rightChild - leftChild;
+    }*/
 
     public void setHeight(int height) {
         this.height = height;
