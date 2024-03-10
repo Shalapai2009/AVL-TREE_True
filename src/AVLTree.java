@@ -238,6 +238,7 @@ public class AVLTree {
         supportingSwap(node, node.getLeftChild());
         Node buffer = node.getRightChild();
         node.setRightChild(node.getLeftChild());
+
         node.setLeftChild(node.getRightChild().getLeftChild());
         node.getRightChild().setLeftChild(node.getRightChild().getRightChild());
         node.getRightChild().setRightChild(buffer);
@@ -248,7 +249,6 @@ public class AVLTree {
         Node buffer = node.getLeftChild();
         node.setLeftChild(node.getRightChild());
         node.setRightChild(node.getLeftChild().getRightChild());
-        node.getRightChild().setLeftChild(node.getRightChild().getRightChild());
         node.getLeftChild().setRightChild(node.getLeftChild().getLeftChild());
         node.getLeftChild().setLeftChild(buffer);
         updateHeight(node.getLeftChild());
@@ -262,19 +262,14 @@ public class AVLTree {
             rightRotate(node);
         }
         else if (balance ==2){
-            if(getBalance(node.getRightChild())==-1){
+            if  (getBalance(node.getRightChild())==-1){
                 rightRotate(node.getRightChild());
             }
             leftRotate(node);
         }
-
     }
     private void RecalculationBalanceFactor(Node node){
         findNodeByNode(node);
-    }
-    private void desintegrateNode(Node node){
-        findNodeByNode(node);
-
     }
     public void printTree() { // метод для вывода дерева в консоль
         Stack globalStack = new Stack(); // общий стек для значений дерева
