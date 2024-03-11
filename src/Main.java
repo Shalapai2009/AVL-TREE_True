@@ -38,9 +38,16 @@ public class Main {
         avlTree.insertNode(node6);
         avlTree.insertNode(node5);
         avlTree.insertNode(node7);*/
-        avlTree.insertNode(node1);
+
+
+
         avlTree.insertNode(node3);
         avlTree.insertNode(node2);
+        avlTree.insertNode(node4);
+        avlTree.insertNode(node1);
+
+        avlTree.deleteNode(node3);
+
 
         //avlTree.deleteNode(node2);
         //avlTree.findNodeByNode(node4);
