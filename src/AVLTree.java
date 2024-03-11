@@ -21,7 +21,7 @@ public class AVLTree {
                         currentNode.setLeftChild(node);
                         currentNode.getLeftChild().setParent(currentNode);
                         updateHeight(currentNode);
-                        balance(rootNode);
+                        balance(currentNode);
                         return;}
                     else {
                         currentNode = currentNode.getLeftChild();
@@ -32,37 +32,33 @@ public class AVLTree {
                         currentNode.setRightChild(node);
                         currentNode.getRightChild().setParent(currentNode);
                         updateHeight(currentNode);
-                        balance(rootNode);
+                        balance(currentNode);
                         return;
                     }
                     else {
                         currentNode = currentNode.getRightChild();
-
                     }
                 }
-
+            }
+        }
+    }
+    public Node findNodeByKey(String keyUrl){
+        String key = keyUrl;
+        int keyLength = key.length();
+        Node currentNode = rootNode;
+        while (currentNode != null){
+            if (currentNode.getLengthKeyUrl() == keyLength  & currentNode.getKeyUrl().equals(key)) {
+                return currentNode;
+            } else if (currentNode.getLengthKeyUrl() >= keyLength) {
+                currentNode = currentNode.getLeftChild();
+            }
+            else if ( currentNode.getLengthKeyUrl() < keyLength) {
+                currentNode = currentNode.getRightChild();
             }
 
         }
-
-    }
-    public Node findNodeByKey(String keyUrl){
-            String key = keyUrl;
-            int keyLength = key.length();
-                Node currentNode = rootNode;
-                while (currentNode != null){
-                    if (currentNode.getLengthKeyUrl() == keyLength  & currentNode.getKeyUrl().equals(key)) {
-                        return currentNode;
-                    } else if (currentNode.getLengthKeyUrl() >= keyLength) {
-                        currentNode = currentNode.getLeftChild();
-                    }
-                      else if ( currentNode.getLengthKeyUrl() < keyLength) {
-                    currentNode = currentNode.getRightChild();
-                }
-
-                }
-                throw new NullPointerException("Не существует такого URL");
-                //return null;
+        throw new NullPointerException("Не существует такого URL");
+        //return null;
     }
     public Node findNodeByNode(Node node){
         Node currentNode = rootNode;
@@ -121,24 +117,24 @@ public class AVLTree {
                     currentNode.getParent().setRightChild(null);
                 } else currentNode.getParent().setLeftChild(null);
                 updateHeight(currentNode.getParent());
-                balance(rootNode);
+                balance(currentNode.getParent());
             } else if (currentNode.getRightChild() == null & currentNode.getLeftChild() != null) { // если есть только ЛЕВЫЙ ребенок
                 if (currentNode.getParent().getRightChild() == currentNode){
                     currentNode.getParent().setRightChild(null);
                 } else {currentNode.getParent().setLeftChild(null);}
                 insertNode(currentNode.getLeftChild());
-                balance(rootNode);
+                balance(currentNode.getParent());
             }
             else if (currentNode.getRightChild() != null & currentNode.getLeftChild() == null) { // если есть только ПРАВЫЙ ребенок
-                    if (currentNode.getParent().getRightChild() == currentNode){
-                        currentNode.getParent().setRightChild(null);
-                        insertNode(currentNode.getRightChild());
-                    } else {currentNode.getParent().setLeftChild(null);}
+                if (currentNode.getParent().getRightChild() == currentNode){
+                    currentNode.getParent().setRightChild(null);
                     insertNode(currentNode.getRightChild());
-                    balance(rootNode);
+                } else {currentNode.getParent().setLeftChild(null);}
+                insertNode(currentNode.getRightChild());
+                balance(rootNode);
             }
             else if (currentNode.getRightChild() != null & currentNode.getLeftChild() != null){//но что желать если существуют два ребенка
-                 if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него дети
+                if (currentNode.getRightChild().getLeftChild() != null){//проверяем правого ребенка есть ли у него дети
 //если да, то идем по левому до конца и меняем удаляемый на найденый
                     Node rightNode = currentNode.getRightChild();
                     while (rightNode.getLeftChild() != null){
@@ -147,7 +143,7 @@ public class AVLTree {
                     deleteNode(rightNode);
                     currentNode.setCodeHtml(rightNode.getCodeHtml());
                     currentNode.setKeyUrl(rightNode.getKeyUrl());
-                     balance(rootNode);
+                    balance(rootNode);
                     /*if (rightNode.getRightChild() != null){
                         rightNode.getParent().setLeftChild(rightNode.getRightChild());
                         rightNode.getRightChild().setParent(rightNode.getParent());
@@ -162,39 +158,24 @@ public class AVLTree {
                      //   updateHeight(rightNode.getParent());
                     }*/
                 } else {
-                     //если нет, то перезаписываем дерево на правого ребенка, и даем ему левого ребенка начального дерева попутно перезаписывая отца левого ребенка на правого ребенка
-                   Node leftNode =  currentNode.getLeftChild();
-                   currentNode.getParent().setRightChild(currentNode.getRightChild());
-                   leftNode.setParent(currentNode.getRightChild());
-                   currentNode.getRightChild().setLeftChild(leftNode);
-                   currentNode.getRightChild().setParent(currentNode.getParent());
-                   balance(rootNode);
+                    //если нет, то перезаписываем дерево на правого ребенка, и даем ему левого ребенка начального дерева попутно перезаписывая отца левого ребенка на правого ребенка
+                    Node leftNode =  currentNode.getLeftChild();
+                    currentNode.getParent().setRightChild(currentNode.getRightChild());
+                    leftNode.setParent(currentNode.getRightChild());
+                    currentNode.getRightChild().setLeftChild(leftNode);
+                    currentNode.getRightChild().setParent(currentNode.getParent());
+                    balance(rootNode);
                     // updateHeight(currentNode.getLeftChild());
-                     //СТРАШНОЕ НЕДОПРОВЕРЕННОЕ МЕСТО
-                     // АХТУНГ КОРРЕКТНАЯ РАБОТА СЧЕТЧИКА ВЫСОТЫ НЕ ПРОВЕРЯЛАСЬ В ПОЛНОЙ МЕРЕ
+                    //СТРАШНОЕ НЕДОПРОВЕРЕННОЕ МЕСТО
+                    // АХТУНГ КОРРЕКТНАЯ РАБОТА СЧЕТЧИКА ВЫСОТЫ НЕ ПРОВЕРЯЛАСЬ В ПОЛНОЙ МЕРЕ
                 }
             }
         }}
     private void updateHeight(Node node){
         Node currentNode = node;
-        /*Node prevNode = null;
-        while (currentNode != null){
-        int maxHeight = (Math.max((currentNode.getLeftChildHeight()), (currentNode.getRightChildHeight()))+1);
-        if (prevNode == null){
-        currentNode.setHeight(maxHeight);}
-        else {
-            if (prevNode.getHeight() == maxHeight-1){
-                currentNode.setHeight(maxHeight);
-            }
-        }
-
-
-        prevNode = currentNode;
-        currentNode = currentNode.getParent();
-        }*/
         while (currentNode != null) {
-           int rightChild;
-           int leftChild;
+            int rightChild;
+            int leftChild;
             if (currentNode.getRightChild() ==null){
                 rightChild = -1;
             } else {rightChild = currentNode.getRightChild().getHeight();}
@@ -219,53 +200,70 @@ public class AVLTree {
         return rightChild - leftChild;
     }
     private void supportingSwap(Node firstNode, Node secondNode){
-       String firstKey = firstNode.getKeyUrl();
-       String firstCode = firstNode.getCodeHtml();
-       Node firstParent = firstNode.getParent();
+        String firstKey = firstNode.getKeyUrl();
+        String firstCode = firstNode.getCodeHtml();
+        Node firstParent = firstNode.getParent();
 
-       String secondKey = secondNode.getKeyUrl();
-       String secondCode = secondNode.getCodeHtml();
-       Node secondParent = secondNode.getParent();
-       firstNode.setKeyUrl(secondKey);
-       firstNode.setCodeHtml(secondCode);
-       //firstNode.setParent(secondParent);
+        String secondKey = secondNode.getKeyUrl();
+        String secondCode = secondNode.getCodeHtml();
+        Node secondParent = secondNode.getParent();
+        firstNode.setKeyUrl(secondKey);
+        firstNode.setCodeHtml(secondCode);
+        //firstNode.setParent(secondParent);
 
-       secondNode.setKeyUrl(firstKey);
-       secondNode.setCodeHtml(firstCode);
-       //secondNode.setParent(firstParent);
+        secondNode.setKeyUrl(firstKey);
+        secondNode.setCodeHtml(firstCode);
+        //secondNode.setParent(firstParent);
     }
     private void rightRotate(Node node){
         supportingSwap(node, node.getLeftChild());
-        Node buffer = node.getRightChild();
-        node.setRightChild(node.getLeftChild());
 
+        //
+        Node buffer = node.getRightChild();
+        //
+        node.setRightChild(node.getLeftChild());
         node.setLeftChild(node.getRightChild().getLeftChild());
+        if (node.getLeftChild()!= null){
+        node.getLeftChild().setParent(node);}
         node.getRightChild().setLeftChild(node.getRightChild().getRightChild());
         node.getRightChild().setRightChild(buffer);
+        if (buffer != null){
+        buffer.setParent(node.getRightChild());}
         updateHeight(node.getRightChild());
     }
     private void leftRotate(Node node){
         supportingSwap(node,node.getRightChild());
+        //
+       // node.getLeftChild().setParent(null);
         Node buffer = node.getLeftChild();
+        //buffer.setParent(null);
+        //
         node.setLeftChild(node.getRightChild());
         node.setRightChild(node.getLeftChild().getRightChild());
+        if (node.getRightChild() != null){
+        node.getRightChild().setParent(node);}
         node.getLeftChild().setRightChild(node.getLeftChild().getLeftChild());
         node.getLeftChild().setLeftChild(buffer);
+        if (buffer != null){
+        buffer.setParent(node.getLeftChild());}
         updateHeight(node.getLeftChild());
     }
     private void balance(Node node){
-        int balance = getBalance(node);
-        if (balance == -2){
-            if (getBalance(node.getLeftChild()) == 1){
-                leftRotate(node.getLeftChild());
+        Node currentNode = node;
+        while (currentNode != null) {
+            int balance = getBalance(currentNode);
+            if (balance == -2) {
+                if (getBalance(currentNode.getLeftChild()) == 1) {
+                    leftRotate(currentNode.getLeftChild());
+                }
+                rightRotate(currentNode);
+            } else if (balance == 2) {
+                if (getBalance(currentNode.getRightChild()) == -1) {
+                    rightRotate(currentNode.getRightChild());
+                }
+                leftRotate(currentNode);
             }
-            rightRotate(node);
-        }
-        else if (balance ==2){
-            if  (getBalance(node.getRightChild())==-1){
-                rightRotate(node.getRightChild());
-            }
-            leftRotate(node);
+            currentNode = currentNode.getParent();
         }
     }
     private void RecalculationBalanceFactor(Node node){
