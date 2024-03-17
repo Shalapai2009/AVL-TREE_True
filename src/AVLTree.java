@@ -49,7 +49,7 @@ public class AVLTree {
         while (currentNode != null){
             if (currentNode.getLengthKeyUrl() == keyLength  & currentNode.getKeyUrl().equals(key)) {
                 return currentNode;
-            } else if (currentNode.getLengthKeyUrl() >= keyLength) {
+            } else if (currentNode.getLengthKeyUrl() > keyLength) {
                 currentNode = currentNode.getLeftChild();
             }
             else if ( currentNode.getLengthKeyUrl() < keyLength) {
@@ -107,7 +107,7 @@ public class AVLTree {
                     leftNode.setParent(rootNode);
                     rootNode.setLeftChild(leftNode);
                     rootNode.setParent(null);
-                    balance(rootNode);
+                    balance(rootNode.getLeftChild());
                     //updateHeight(currentNode.getLeftChild());
                     // АХТУНГ КОРРЕКТНАЯ РАБОТА СЧЕТЧИКА ВЫСОТЫ НЕ ПРОВЕРЯЛАСЬ В ПОЛНОЙ МЕРЕ
                 }
@@ -129,7 +129,6 @@ public class AVLTree {
             else if (currentNode.getRightChild() != null & currentNode.getLeftChild() == null) { // если есть только ПРАВЫЙ ребенок
                 if (currentNode.getParent().getRightChild() == currentNode){
                     currentNode.getParent().setRightChild(null);
-                    insertNode(currentNode.getRightChild());
                 } else {currentNode.getParent().setLeftChild(null);}
                 insertNode(currentNode.getRightChild());
                 //balance(currentNode.getParent());
@@ -147,12 +146,12 @@ public class AVLTree {
                     //Тут с балансировкой муть
                 } else {
                     //если нет, то перезаписываем дерево на правого ребенка, и даем ему левого ребенка начального дерева попутно перезаписывая отца левого ребенка на правого ребенка
-                    Node leftNode =  currentNode.getLeftChild();
+                    Node leftNode = currentNode.getLeftChild();
                     currentNode.getParent().setRightChild(currentNode.getRightChild());
                     leftNode.setParent(currentNode.getRightChild());
                     currentNode.getRightChild().setLeftChild(leftNode);
                     currentNode.getRightChild().setParent(currentNode.getParent());
-                    balance(currentNode);
+                    balance(currentNode.getRightChild());
                     //СТРАШНОЕ НЕДОПРОВЕРЕННОЕ МЕСТО
                     // АХТУНГ КОРРЕКТНАЯ РАБОТА СЧЕТЧИКА ВЫСОТЫ НЕ ПРОВЕРЯЛАСЬ В ПОЛНОЙ МЕРЕ
                 }
